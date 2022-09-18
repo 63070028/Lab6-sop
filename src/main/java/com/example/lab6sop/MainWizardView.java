@@ -10,6 +10,7 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class MainWizardView extends VerticalLayout {
     private ComboBox position, school, house;
     private RadioButtonGroup<String> gender;
     private Button prv, create, update, delete, next;
-    WizardController wizardController;
+    private Wizards wizards;
 
     public MainWizardView() {
         fullName = new TextField("Fullname");
@@ -47,9 +48,15 @@ public class MainWizardView extends VerticalLayout {
 
         add(fullName, gender, position, dollars, dollars, school, house, hl);
 
-//        ArrayList<Wizard> wizards = wizardController.getWizard();
-//        for (Wizard w: wizards) {
-//            System.out.println(w.getName());
-//        }
+
+        next.addClickListener(e->{
+            wizards = WebClient.create().get().uri("http://localhost:8080/wizards").retrieve().bodyToMono(Wizards.class).block();
+            for (Wizard w: wizards.getWizards()) {
+            System.out.println(w.getName());
+            }
+        });
+
+
+
     }
 }

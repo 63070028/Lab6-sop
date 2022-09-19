@@ -21,11 +21,13 @@ public class MainWizardView extends VerticalLayout {
     private RadioButtonGroup<String> gender;
     private Button prv, create, update, delete, next;
     private Wizards wizards;
+    private static int maxPage;
+    private static int page = -1;
 
     public MainWizardView() {
         fullName = new TextField("Fullname");
         gender = new RadioButtonGroup<>("Gender:");
-        gender.setItems("Male", "Famale");
+        gender.setItems("Male", "Female");
         position = new ComboBox<>();
         position.setItems("Student", "Teacher");
         position.setPlaceholder("Position");
@@ -50,13 +52,59 @@ public class MainWizardView extends VerticalLayout {
 
 
         next.addClickListener(e->{
-            wizards = WebClient.create().get().uri("http://localhost:8080/wizards").retrieve().bodyToMono(Wizards.class).block();
-            for (Wizard w: wizards.getWizards()) {
-            System.out.println(w.getName());
+            if(page < 0){
+                page++;
+                wizards = WebClient.create().get().uri("http://localhost:8080/wizards").retrieve().bodyToMono(Wizards.class).block();
+                maxPage = wizards.getWizards().size();
+                System.out.println(page);
+
+                fullName.setValue(wizards.getWizards().get(page).getName());
+                if(wizards.getWizards().get(page).getSex().equals("m")){
+                    gender.setValue("Male");
+                } else if (wizards.getWizards().get(page).getSex().equals("f")){
+                    gender.setValue("Female");
+                }
+                position.setValue(wizards.getWizards().get(page).getPosition());
+                dollars.setValue(String.valueOf(wizards.getWizards().get(page).getMoney()));
+                school.setValue(wizards.getWizards().get(page).getSchool());
+                house.setValue(wizards.getWizards().get(page).getHouse());
+            }
+            else if(page >= 0 && page+1 < maxPage){
+                page++;
+                System.out.println(page);
+                fullName.setValue(wizards.getWizards().get(page).getName());
+                if(wizards.getWizards().get(page).getSex().equals("m")){
+                    gender.setValue("Male");
+                } else if (wizards.getWizards().get(page).getSex().equals("f")){
+                    gender.setValue("Female");
+                }
+                position.setValue(wizards.getWizards().get(page).getPosition());
+                dollars.setValue(String.valueOf(wizards.getWizards().get(page).getMoney()));
+                school.setValue(wizards.getWizards().get(page).getSchool());
             }
         });
 
+        prv.addClickListener(e->{
+            if(page > 0){
+                page--;
+                System.out.println(page);
+                fullName.setValue(wizards.getWizards().get(page).getName());
+                if(wizards.getWizards().get(page).getSex().equals("m")){
+                    gender.setValue("Male");
+                } else if (wizards.getWizards().get(page).getSex().equals("f")){
+                    gender.setValue("Female");
+                }
+                position.setValue(wizards.getWizards().get(page).getPosition());
+                dollars.setValue(String.valueOf(wizards.getWizards().get(page).getMoney()));
+                school.setValue(wizards.getWizards().get(page).getSchool());
+            }
+        });
 
+        create.addClickListener(e->{
+//           Wizard wizard = WebClient.create().post().uri("http://localhost:8080/addWizard" +
+//                   "").retrieve().bodyToMono(Wizard.class).block();
+
+        });
 
     }
 }

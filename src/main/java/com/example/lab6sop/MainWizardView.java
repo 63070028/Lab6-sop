@@ -4,6 +4,7 @@ package com.example.lab6sop;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
@@ -120,6 +121,10 @@ public class MainWizardView extends VerticalLayout {
 
             wizards.getWizards().add(wizard);
             maxPage = wizards.getWizards().size();
+
+            Notification n = new Notification("Create Succeed");
+            n.open();
+            n.setDuration(3000);
         });
 
         update.addClickListener(e->{
@@ -139,6 +144,9 @@ public class MainWizardView extends VerticalLayout {
             newWizard.setSchool(String.valueOf(school.getValue()));
             newWizard.setHouse(String.valueOf(house.getValue()));
 
+            Notification n = new Notification("Update Succeed");
+            n.open();
+            n.setDuration(3000);
         });
 
         delete.addClickListener(e->{
@@ -177,6 +185,11 @@ public class MainWizardView extends VerticalLayout {
 
                 nameOld = wizards.getWizards().get(page).getName();
             }
+
+
+            Notification n = new Notification("Delete Succeed");
+            n.open();
+            n.setDuration(3000);
 
         });
     }

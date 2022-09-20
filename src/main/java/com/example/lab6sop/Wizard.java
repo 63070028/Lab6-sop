@@ -3,8 +3,10 @@ package com.example.lab6sop;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
+
 @Document("Wizard")
-public class Wizard {
+public class Wizard implements Serializable {
     @Id
     private String _id;
     private String sex;
